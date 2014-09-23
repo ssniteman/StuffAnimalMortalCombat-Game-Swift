@@ -9,6 +9,9 @@
 import UIKit
 import MultipeerConnectivity
 
+let kMCSessionMimimumNumberofPeers = 1
+let kMCSessionMaximumNumberofPeers = 1
+
 class PlayerConnect: NSObject,
 MCSessionDelegate {
     
@@ -33,6 +36,8 @@ MCSessionDelegate {
         // create the browser viewcontroller with a unique service name
         self.browser = MCBrowserViewController(serviceType:serviceType,
             session:self.session)
+        
+        self.browser.maximumNumberOfPeers = 1
         
         self.assistant = MCAdvertiserAssistant(serviceType:serviceType,
             discoveryInfo:nil, session:self.session)
