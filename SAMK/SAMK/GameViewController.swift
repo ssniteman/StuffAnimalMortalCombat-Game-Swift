@@ -38,6 +38,11 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
 
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
+            
+            // SCALLING PROPORTIONALLY TO SCREEN SIZE
+            
+            scene.size = UIScreen.mainScreen().bounds.size
+            
             // Configure the view.
             let skView = self.view as SKView
             skView.showsFPS = true
@@ -50,10 +55,14 @@ class GameViewController: UIViewController {
             scene.scaleMode = .AspectFill
             
             skView.presentScene(scene)
+            
+            controlsVC.scene = scene
+
         }
         
         
-        // our coding
+        // our coding !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
         
         self.view.addSubview(statusVC.view)
         self.view.addSubview(controlsVC.view)

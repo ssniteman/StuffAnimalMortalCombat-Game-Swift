@@ -10,6 +10,8 @@ import UIKit
 
 class ControlsViewController: UIViewController {
 
+    var scene: GameScene!
+    
     var aButton = UIButton()
     var bButton = UIButton()
     
@@ -21,7 +23,7 @@ class ControlsViewController: UIViewController {
         
         self.view.frame = CGRectMake(0, SCREEN_HEIGHT - 140, SCREEN_WIDTH, 140)
         
-        self.view.backgroundColor = UIColor.blueColor()
+//        self.view.backgroundColor = UIColor.blueColor()
 
         // Do any additional setup after loading the view.
         
@@ -35,6 +37,9 @@ class ControlsViewController: UIViewController {
         aButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         aButton.layer.cornerRadius = buttonSize / 2.0
         
+        aButton.addTarget(self, action: Selector("aTapped"), forControlEvents: .TouchUpInside)
+
+        
         self.view.addSubview(aButton)
         
         
@@ -46,11 +51,29 @@ class ControlsViewController: UIViewController {
         bButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         bButton.layer.cornerRadius = buttonSize / 2.0
         
+        bButton.addTarget(self, action: Selector("bTapped"), forControlEvents: .TouchUpInside)
+        
         self.view.addSubview(bButton)
         
         renderJoyStick()
         
     }
+    
+    func aTapped() {
+        
+    }
+    
+    func bTapped() {
+        
+        scene.player1.body.physicsBody?.applyImpulse(CGVectorMake(0.0, 50.0))
+
+        
+    }
+    
+    
+    
+    
+    
     
     func renderJoyStick() {
         
