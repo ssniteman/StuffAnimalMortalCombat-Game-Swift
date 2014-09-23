@@ -29,6 +29,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         floor.position = CGPointMake(SCREEN_WIDTH / 2.0, 5)
         self.addChild(floor)
         
+        
         floor.physicsBody = SKPhysicsBody(edgeLoopFromRect: floor.frame)
         floor.physicsBody?.affectedByGravity = false
         floor.physicsBody?.dynamic = false
@@ -36,6 +37,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         player1.body.position = CGPointMake(300, 300)
         self.addChild(player1.body)
+        
+        var floor1 = SKShapeNode(rectOfSize: CGSizeMake(200, 10))
+        floor1.fillColor = UIColor.darkGrayColor()
+        floor1.position = CGPointMake(SCREEN_WIDTH / 2.0, 120)
+        
+        
+        floor1.physicsBody = SKPhysicsBody(edgeLoopFromRect: floor1.frame)
+        floor1.physicsBody?.affectedByGravity = false
+        floor1.physicsBody?.dynamic = false
+        
+        
+        self.addChild(floor1)
 
     }
     
