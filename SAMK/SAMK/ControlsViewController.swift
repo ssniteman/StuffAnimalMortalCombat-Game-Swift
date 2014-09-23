@@ -12,6 +12,7 @@ import SpriteKit
 class ControlsViewController: UIViewController {
 
     var scene: GameScene!
+    var playerConnect: PlayerConnect!
     
     var aButton = UIButton()
     var bButton = UIButton()
@@ -150,12 +151,17 @@ class ControlsViewController: UIViewController {
                     
                     scene.player1.direction = 1
                     scene.player1.body.physicsBody?.applyImpulse(CGVectorMake(40.0, 0.0))
+                    
+                    playerConnect.sendPlayerInfo(["moveRight":true])
                 }
                 
                 if location.x < joyStick.center.x - 10 {
                     
                     scene.player1.direction = -1
-                       scene.player1.body.physicsBody?.applyImpulse(CGVectorMake(-40.0, 0.0))
+                    scene.player1.body.physicsBody?.applyImpulse(CGVectorMake(-40.0, 0.0))
+                    
+                    playerConnect.sendPlayerInfo(["moveLeft":true])
+
                 }
                 
             }

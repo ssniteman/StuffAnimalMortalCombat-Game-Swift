@@ -12,15 +12,15 @@ import MultipeerConnectivity
 class PlayerConnect: NSObject,
 MCSessionDelegate {
     
+    var scene: GameScene!
+
     let serviceType = "stuffedAnimalMK"
     
     var browser : MCBrowserViewController!
     var assistant : MCAdvertiserAssistant!
     var session : MCSession!
     var peerID: MCPeerID!
-    
-    @IBOutlet var chatView: UITextView!
-    @IBOutlet var messageField: UITextField!
+
     
     override init() {
         
@@ -41,47 +41,13 @@ MCSessionDelegate {
         self.assistant.start()
     }
     
-    @IBAction func sendChat(sender: UIButton) {
-        // Bundle up the text in the message field, and send it off to all
-        // connected peers
+    func sendPlayerInfo(info: NSDictionary) {
         
-        let msg = self.messageField.text.dataUsingEncoding(NSUTF8StringEncoding,
-            allowLossyConversion: false)
+        var infoData = NSKeyedArchiver.archivedDataWithRootObject(info)
         
-        var error : NSError?
-        
-        self.session.sendData(msg, toPeers: self.session.connectedPeers,
-            withMode: MCSessionSendDataMode.Unreliable, error: &error)
-        
-        if error != nil {
-            print("Error sending data: \(error?.localizedDescription)")
-        }
-        
-        self.updateChat(self.messageField.text, fromPeer: self.peerID)
-        
-        self.messageField.text = ""
-    }
+        self.session.sendData(infoData, toPeers: self.session.connectedPeers, withMode: .Reliable, error: nil)
     
-    func updateChat(text : String, fromPeer peerID: MCPeerID) {
-        // Appends some text to the chat view
-        
-        // If this peer ID is the local device's peer ID, then show the name
-        // as "Me"
-        var name : String
-        
-        switch peerID {
-        case self.peerID:
-            name = "Me"
-        default:
-            name = peerID.displayName
-        }
-        
-        // Add the name to the message and display it
-        let message = "\(name): \(text)\n"
-        self.chatView.text = self.chatView.text + message
-        
     }
-    
  
     func session(session: MCSession!, didReceiveData data: NSData!,
         fromPeer peerID: MCPeerID!)  {
@@ -90,9 +56,19 @@ MCSessionDelegate {
             // This needs to run on the main queue
             dispatch_async(dispatch_get_main_queue()) {
                 
-                var msg = NSString(data: data, encoding: NSUTF8StringEncoding)
+            var info = NSKeyedUnarchiver.unarchiveObjectWithData(data) as NSDictionary
+            
+                if info["moveLeft"] != nil {
+                    
+                    self.scene.player2.body.physicsBody?.applyImpulse(CGVectorMake(-40.0, 0.0))
+                }
                 
-                self.updateChat(msg, fromPeer: peerID)
+                if info["moveRight"] != nil {
+                    
+                    self.scene.player2.body.physicsBody?.applyImpulse(CGVectorMake(40.0, 0.0))
+                }
+                
+                // take data and move player2
             }
     }
     
@@ -120,6 +96,9 @@ MCSessionDelegate {
     func session(session: MCSession!, peer peerID: MCPeerID!,
         didChangeState state: MCSessionState)  {
             // Called when a connected peer changes state (for example, goes offline)
+            
+            println(peerID.displayName)
+            println(state)
             
     }
     

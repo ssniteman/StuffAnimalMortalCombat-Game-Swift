@@ -35,6 +35,8 @@ class GameViewController: UIViewController, MCBrowserViewControllerDelegate {
     let statusVC = StatusViewController()
     let controlsVC = ControlsViewController()
     let playerConnect = PlayerConnect()
+    
+    var findFriendsButton: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,7 +61,7 @@ class GameViewController: UIViewController, MCBrowserViewControllerDelegate {
             skView.presentScene(scene)
             
             controlsVC.scene = scene
-
+            playerConnect.scene = scene
         }
         
         
@@ -67,20 +69,21 @@ class GameViewController: UIViewController, MCBrowserViewControllerDelegate {
         
         playerConnect.browser.delegate = self
         
-        var findFriendsButton = UIButton (frame: CGRectMake(0, 0, 200, 100))
-        findFriendsButton.layer.cornerRadius = 50
+        findFriendsButton = UIButton (frame: self.view.frame)
+//        findFriendsButton.layer.cornerRadius = 50
         findFriendsButton.setTitle("Find Friends", forState: .Normal)
         findFriendsButton.setTitleColor(UIColor.blackColor(), forState: .Normal)
         findFriendsButton.backgroundColor = (UIColor.whiteColor())
         findFriendsButton.center = self.view.center
         findFriendsButton.addTarget(self, action: Selector("findFriends"), forControlEvents: .TouchUpInside)
         
+        
+        controlsVC.playerConnect = playerConnect
+        self.view.addSubview(statusVC.view)
+        self.view.addSubview(controlsVC.view)
+        
         self.view.addSubview(findFriendsButton)
-        
-        
-//        self.view.addSubview(statusVC.view)
-//        self.view.addSubview(controlsVC.view)
-        
+
         
     }
     
@@ -99,6 +102,8 @@ class GameViewController: UIViewController, MCBrowserViewControllerDelegate {
         browserViewController: MCBrowserViewController!)  {
             // Called when the browser view controller is dismissed (ie the Done
             // button was tapped)
+            
+            findFriendsButton.removeFromSuperview()
             
             self.dismissViewControllerAnimated(true, completion: nil)
     }

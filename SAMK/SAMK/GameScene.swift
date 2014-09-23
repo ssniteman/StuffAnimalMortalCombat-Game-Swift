@@ -35,8 +35,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         floor.physicsBody?.dynamic = false
         
         
-        player1.body.position = CGPointMake(300, 300)
+        player1.body.position = CGPointMake(SCREEN_WIDTH / 2, 300)
         self.addChild(player1.body)
+        
+        player2.body.position = CGPointMake(SCREEN_WIDTH / 2, 300)
+        self.addChild(player2.body)
+        
         
         var floor1 = SKShapeNode(rectOfSize: CGSizeMake(200, 10))
         floor1.fillColor = UIColor.darkGrayColor()
