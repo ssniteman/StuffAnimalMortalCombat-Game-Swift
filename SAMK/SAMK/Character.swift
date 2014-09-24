@@ -14,27 +14,47 @@ class Character: NSObject {
     // We had a character class, but nothing set to it
 
     
-    var body: SKShapeNode!
+    var body: SKSpriteNode!
     var direction: CGFloat = 1.0
     
-    override init() {
+    var textureNames: [String] = []
+    
+    init(animal:String) {
         
-        super.init()
+        var characterAtlas = SKTextureAtlas(named: animal)
+    
+        textureNames = sorted(characterAtlas.textureNames as [String], <)
         
-        body = SKShapeNode(rectOfSize: CGSizeMake(40, 70))
-//        body.fillColor = UIColor.redColor()
+        body = SKSpriteNode(imageNamed: characterAtlas.textureNames[0] as String)
+        
+        body.size = CGSizeMake(54, 116)
+        
         body.physicsBody = SKPhysicsBody(rectangleOfSize: body.frame.size)
+        
+        
         
     }
     
     func moveRight() {
         direction = 1
         body.physicsBody?.applyImpulse(CGVectorMake(40.0, 0.0))
+        
+        var walkAction = SKAction.animateWithTextures(texturesFromNames(), timePerFrame: 0.1, resize: false, restore: true)
+        
+        body.runAction(walkAction)
+
     }
     
     func moveLeft() {
         direction = -1
         body.physicsBody?.applyImpulse(CGVectorMake(-40.0, 0.0))
+        
+        var walkAction = SKAction.animateWithTextures(texturesFromNames(), timePerFrame: 0.1, resize: false, restore: true)
+        
+        body.runAction(walkAction)
+        
+        body.xScale = direction
+
     }
     
     func jump() {
@@ -71,6 +91,19 @@ class Character: NSObject {
         
         body.physicsBody?.applyImpulse(CGVectorMake(-20.0 * direction, 0.0))
         
+    }
+    
+    func texturesFromNames() -> [SKTexture] {
+        
+        var textures: [SKTexture] = []
+        
+        for textureName in textureNames {
+            
+            textures.append(SKTexture(imageNamed: textureName))
+            
+        }
+        
+        return textures
     }
     
     

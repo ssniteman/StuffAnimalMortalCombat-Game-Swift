@@ -10,8 +10,8 @@ import SpriteKit
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    var player1 = Character()
-    var player2 = Character()
+    var player1 = Character(animal: "bunny")
+    var player2 = Character(animal: "panda")
     
     var sun = SKSpriteNode(imageNamed: "sun")
     
@@ -43,7 +43,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(floor)
         
         
-        floor.physicsBody = SKPhysicsBody(edgeLoopFromRect: floor.frame)
+        floor.physicsBody = SKPhysicsBody(rectangleOfSize: floor.frame.size)
         floor.physicsBody?.affectedByGravity = false
         floor.physicsBody?.dynamic = false
         
@@ -60,7 +60,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         floor1.position = CGPointMake(SCREEN_WIDTH / 2.0, 120)
         
         
-        floor1.physicsBody = SKPhysicsBody(edgeLoopFromRect: floor1.frame)
+        floor1.physicsBody = SKPhysicsBody(rectangleOfSize: floor1.frame.size)
         floor1.physicsBody?.affectedByGravity = false
         floor1.physicsBody?.dynamic = false
         
@@ -71,5 +71,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
+        
+        
+        sun.zRotation += 0.01
+        
     }
 }
