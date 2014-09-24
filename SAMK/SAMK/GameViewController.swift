@@ -40,6 +40,7 @@ class GameViewController: UIViewController, MCBrowserViewControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
 
         if let scene = GameScene.unarchiveFromFile("GameScene") as? GameScene {
             
@@ -82,7 +83,7 @@ class GameViewController: UIViewController, MCBrowserViewControllerDelegate {
         self.view.addSubview(statusVC.view)
         self.view.addSubview(controlsVC.view)
         
-        self.view.addSubview(findFriendsButton)
+//        self.view.addSubview(findFriendsButton)
 
         
     }

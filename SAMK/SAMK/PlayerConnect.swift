@@ -44,6 +44,14 @@ MCSessionDelegate {
         
         // tell the assistant to start advertising our fabulous chat
         self.assistant.start()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("closeSession"), name: UIApplicationWillResignActiveNotification, object: nil)
+    }
+    
+    func closeSession() {
+        
+        self.session.disconnect()
+        
     }
     
     func sendPlayerInfo(info: NSDictionary) {
@@ -65,13 +73,24 @@ MCSessionDelegate {
             
                 if info["moveLeft"] != nil {
                     
-                    self.scene.player2.body.physicsBody?.applyImpulse(CGVectorMake(-40.0, 0.0))
+                    self.scene.player2.moveLeft()
                 }
                 
                 if info["moveRight"] != nil {
                     
-                    self.scene.player2.body.physicsBody?.applyImpulse(CGVectorMake(40.0, 0.0))
+                    self.scene.player2.moveRight()
                 }
+                
+                if info["jump"] != nil {
+                    
+                    self.scene.player2.jump()
+                }
+                
+                if info["fire"] != nil {
+                    
+                    self.scene.player2.fire()
+                }
+                
                 
                 // take data and move player2
             }
