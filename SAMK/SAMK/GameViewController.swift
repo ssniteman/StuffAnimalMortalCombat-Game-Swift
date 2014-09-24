@@ -62,7 +62,13 @@ class GameViewController: UIViewController, MCBrowserViewControllerDelegate {
             skView.presentScene(scene)
             
             controlsVC.scene = scene
+            
+            // giving statusVC access to gamescene information
+            statusVC.scene = scene
+            
             playerConnect.scene = scene
+            
+            
         }
         
         

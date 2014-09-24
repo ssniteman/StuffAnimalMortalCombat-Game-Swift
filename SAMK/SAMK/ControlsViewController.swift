@@ -62,12 +62,9 @@ class ControlsViewController: UIViewController {
     }
     
     func aTapped() {
-        
 
         scene.player1.fire()
         playerConnect.sendPlayerInfo(["fire":true])
-
-
     }
     
     func bTapped() {
@@ -77,11 +74,6 @@ class ControlsViewController: UIViewController {
         playerConnect.sendPlayerInfo(["jump":true])
 
     }
-    
-    
-    
-    
-    
     
     func renderJoyStick() {
         
@@ -100,7 +92,6 @@ class ControlsViewController: UIViewController {
         
         
     }
-    
     
     
     override func touchesBegan(touches: NSSet, withEvent event: UIEvent) {

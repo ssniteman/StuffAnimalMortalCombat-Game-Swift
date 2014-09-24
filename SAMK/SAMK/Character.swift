@@ -9,6 +9,11 @@
 import UIKit
 import SpriteKit
 
+let FIRE_CONTACT: UInt32 = 10
+let PLAYER_CONTACT: UInt32 = 2
+let MAX_HP: Int = 100
+
+
 class Character: NSObject {
  
     // We had a character class, but nothing set to it
@@ -17,21 +22,18 @@ class Character: NSObject {
     var body: SKSpriteNode!
     var direction: CGFloat = 1.0
     
+    var currentHP: Int = 100
     var textureNames: [String] = []
     
     init(animal:String) {
         
         var characterAtlas = SKTextureAtlas(named: animal)
-    
         textureNames = sorted(characterAtlas.textureNames as [String], <)
-        
         body = SKSpriteNode(imageNamed: characterAtlas.textureNames[0] as String)
-        
         body.size = CGSizeMake(54, 116)
-        
         body.physicsBody = SKPhysicsBody(rectangleOfSize: body.frame.size)
-        
-        
+        body.physicsBody?.allowsRotation = false
+        body.physicsBody?.categoryBitMask = FIRE_CONTACT
         
     }
     
@@ -42,6 +44,8 @@ class Character: NSObject {
         var walkAction = SKAction.animateWithTextures(texturesFromNames(), timePerFrame: 0.1, resize: false, restore: true)
         
         body.runAction(walkAction)
+        body.xScale = direction
+
 
     }
     
@@ -52,7 +56,6 @@ class Character: NSObject {
         var walkAction = SKAction.animateWithTextures(texturesFromNames(), timePerFrame: 0.1, resize: false, restore: true)
         
         body.runAction(walkAction)
-        
         body.xScale = direction
 
     }
@@ -75,11 +78,6 @@ class Character: NSObject {
         
         var kamehameha = node!
         
-        //        var kamehameha = NSKeyedUnarchiver.unarchiveObjectWithData(particlePath!) as SKEmitterNode
-        
-        //        var kamehameha = SKShapeNode(rectOfSize: CGSizeMake(100, 100), cornerRadius: 50)
-        //        kamehameha.fillColor = UIColor.cyanColor()
-        
         kamehameha.position = CGPointMake(body.position.x + 50 * direction, body.position.y)
         
         kamehameha.physicsBody = SKPhysicsBody(circleOfRadius: 50)
@@ -87,10 +85,15 @@ class Character: NSObject {
         
         body.parent?.addChild(kamehameha)
         
-        kamehameha.physicsBody?.applyImpulse(CGVectorMake(200.0 * direction, 0.0))
+        kamehameha.physicsBody?.applyImpulse(CGVectorMake(10.0 * direction, 0.0))
         
-        body.physicsBody?.applyImpulse(CGVectorMake(-20.0 * direction, 0.0))
+        body.physicsBody?.applyImpulse(CGVectorMake(-5.0 * direction, 0.0))
         
+        // Trying to get contact to happen
+        
+        kamehameha.physicsBody?.contactTestBitMask = FIRE_CONTACT
+//        kamehameha.physicsBody?.collisionBitMask = FIRE_CONTACT
+
     }
     
     func texturesFromNames() -> [SKTexture] {
@@ -104,6 +107,18 @@ class Character: NSObject {
         }
         
         return textures
+    }
+    
+    func checkHit (bodyA:SKPhysicsBody, bodyB: SKPhysicsBody) {
+        
+        if bodyA.node == self {
+            
+            currentHP -= 10
+            bodyB.node?.removeFromParent()
+            
+            NSNotificationCenter.defaultCenter().postNotificationName("healthUpdate", object: nil, userInfo: ["player":self])
+        }
+        
     }
     
     
